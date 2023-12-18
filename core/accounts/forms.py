@@ -24,3 +24,4 @@ class CustomerCreationForm(UserCreationForm):
         self.fields['name'].widget.attrs['class'] = 'form-control'
         self.fields['phone'].widget.attrs['class'] = 'form-control'
         self.fields['email'].widget.attrs['class'] = 'form-control'
+
