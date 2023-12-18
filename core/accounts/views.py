@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import CustomerCreationForm
-from .models import Customers 
+from django.urls import reverse
 from django.contrib import messages
 
 
@@ -33,11 +33,11 @@ def login_view(request):
             if customer.is_superuser:
                 return redirect('/admin')
             else:
-                return redirect('/home')
+                return redirect('home')
         else:
             messages.error(request, "Invalid credentials. Please try again. If you are new please login")
     else: 
         return render(request, 'registration/login.html')
     
 def home(request):
-    return render(request, "registration/home.html")
+    return render(request, "home.html")
