@@ -1,15 +1,41 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title> Home Page </title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-        <h3> Home page </h3>
-    </body>
-</html>
+{% block content %}
+
+<!-- Start Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt"> 
+                    <h1> Welcome </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+<!-- search form -->
+<div class="container-fluid">
+    <form action="search" method="post">
+        {% csrf_token %}
+        <div class="form-group row mt-3">
+            <div class="col-md-9">
+                <input type="search" name="h_search" id="h_search" class="form-control" value="{{ term }}">
+            </div>
+            <div class="col-md-3">
+                <a href="search">
+                    <input type="submit" value="SEARCH" id="searchbtn" name="searchbtn"
+                        class="form-control btn btn-primary">
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- End of search form -->
+
+
+
+
+{% endblock %}
