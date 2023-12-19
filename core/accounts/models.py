@@ -37,4 +37,8 @@ class Customers(AbstractUser):
     objects = CustomerManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['phone', 'name']
+    REQUIRED_FIELDS = ['phone', 'name'] 
+
+    def __str__(self):
+        return self.name
+    

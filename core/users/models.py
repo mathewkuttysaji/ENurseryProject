@@ -6,4 +6,8 @@ from accounts.models import Customers
 class ContactUs(models.Model):
     customer = models.ForeignKey(Customers, on_delete=models.CASCADE) 
     date = models.DateTimeField(auto_now_add=True) 
-    message_text = models.TextField()
+    message_text = models.TextField() 
+
+    def __str__(self):
+        return f"{self.customer.name}'s message "
+    

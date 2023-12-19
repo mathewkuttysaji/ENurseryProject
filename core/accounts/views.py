@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .forms import CustomerCreationForm
 from django.urls import reverse
 from django.contrib import messages
@@ -41,5 +41,10 @@ def login_view(request):
         return render(request, 'registration/login.html')
 
 
-def home(request): 
-    return render(request, "home.html")
+def home_view(request): 
+    return render(request, "home.html") 
+
+def logout_view(request):
+    logout(request)
+
+    return render(request, 'index.html')
