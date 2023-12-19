@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Contact</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+<!-- Start Contact Form -->
+<div class="untree_co-section">
+    <div class="container">
+        <div class="block">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-8 pb-4">
+                    <div class="p-3 p-lg-5 border bg-white">
+                        <form method="post" action="{% url 'contact' %}"> 
+                            {% csrf_token %} 
+                            
+                            <div class="row"> 
+                                {% if messages %} 
+                                <div class="messages"> 
+                                    {% for message in messages %} 
+                                    <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>  
+                                        {{ message }} 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                                {% endif %} 
+                                <div class="form-group mb-5">  
+                                    <label class="text-black" for="message">Message</label> 
+                                    <textarea name="message" class="form-control" id="message" cols="30" rows="5"required placeholder="Enter your message here...."></textarea> 
+                                </div> 
+                            </div>
+                            
+                            <div class="row"> 
+                                <div class="d-grid gap-2 col-6 mx-auto mt-4"> 
+                                    <input type="submit" value="Send Message" class="btn btn-primary"> 
+                                </div> 
+                            </div> 
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

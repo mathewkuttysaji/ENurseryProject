@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from .forms import CustomerCreationForm
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -38,6 +39,7 @@ def login_view(request):
             messages.error(request, "Invalid credentials. Please try again. If you are new please login")
     else: 
         return render(request, 'registration/login.html')
-    
-def home(request):
+
+
+def home(request): 
     return render(request, "home.html")
