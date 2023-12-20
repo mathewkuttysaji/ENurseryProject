@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.files.base import File
 from django.db.models.base import Model
 from django.forms.utils import ErrorList
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm, SetPasswordForm
 
 class CustomerCreationForm(UserCreationForm):
     name : forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -51,3 +51,14 @@ class StyledPasswordForm(PasswordChangeForm):
         self.fields['old_password'].widget.attrs['class'] = 'form-control'
         self.fields['new_password1'].widget.attrs['class'] = 'form-control'
         self.fields['new_password2'].widget.attrs['class'] = 'form-control'
+
+
+
+class StyledPasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name in self.fields:
+            self.fields[field_name].widget.attrs.update({'class': 'form-control'}) 
+
+
