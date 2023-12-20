@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import CustomerCreationForm
+from .forms import CustomerCreationForm, ChangeProfileForm, StyledPasswordForm
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -39,6 +39,8 @@ def login_view(request):
             messages.error(request, "Invalid credentials. Please try again. If you are new please login")
     else: 
         return render(request, 'registration/login.html')
+    return render(request, 'registration/login.html') 
+    
 
 
 def home_view(request): 
@@ -48,3 +50,24 @@ def logout_view(request):
     logout(request)
 
     return render(request, 'index.html')
+
+
+def edit_profile_view(request):
+    user = request.user
+
+    if request.method == 'POST':
+        user_form = ChangeProfileForm(request.POST, instance=user)
+        password_form = StyledPasswordForm(user, request.POST)
+
+        print(user_form.is_valid(), "user form valid")
+        print(password_form.is_valid(), "password form valid")
+        if user_form.is_valid() and password_form.is_valid():
+            user_form.save()
+            password_form.save()
+            messages.success(request, 'Profile updated successfully.')
+            return render(request, 'registration/change_user_details.html')
+    else:
+        user_form = ChangeProfileForm(instance=user)
+        password_form = StyledPasswordForm(user)
+
+    return render(request, 'registration/change_user_details.html', {'user_form': user_form, 'password_form': password_form})
