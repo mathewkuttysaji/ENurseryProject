@@ -22,6 +22,25 @@ class CustomerCreationForm(UserCreationForm):
             'name', 'phone', 'email', 'password1', 'password2'
         )
 
+    def clean_name(self): 
+        name = self.cleaned_data.get('name') 
+        
+        if not name.isalpha(): 
+            raise forms.ValidationError("Name should only contain letters (no digits or special characters).")
+
+        return name 
+    
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+
+        if not phone.isdigit():
+            raise forms.ValidationError("Phone number should only contain digits.")
+
+        if len(phone) != 10:
+            raise forms.ValidationError("Phone number should be exactly 10 digits long.")
+
+        return phone
+
     def __init__(self, *args,**kwargs):
         super(CustomerCreationForm, self).__init__(*args, **kwargs)
 
