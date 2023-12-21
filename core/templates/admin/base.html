@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-
+	
 	{% load static %}
 
 <head>
@@ -37,7 +37,7 @@
 				<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
 					<li><a class="nav-link" href="{% url 'admin_home' %}">Admin Home</a></li>
 					<li><a class="nav-link" href="{% url 'view_users' %}"> View Users </a></li>
-					<li><a class="nav-link" href="services.html">Services</a></li>
+					<li><a class="nav-link" href="{% url 'product_upload' %}"> Upload Products </a></li>
 					<li><a class="nav-link" href="blog.html">Blog</a></li>
 					<li><a class="nav-link" href="{% url 'contact' %}">Contact us</a></li>
 				</ul>
