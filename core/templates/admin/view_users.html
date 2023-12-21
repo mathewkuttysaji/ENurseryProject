@@ -1,0 +1,75 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+
+<!-- Start Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Welcome Admin </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+
+<div class="untree_co-section">
+    <div class="container">
+        <div class="col-md-12">
+            <div class="row mb-12">
+                <div class="col-md-12 h-100">
+                    <h2 class="h3 mb-3 text-black"> Users... </h2>
+                    <div class="p-3 p-lg-5 border bg-white h-100">
+                        <table class="table site-block-order-table mb-5 overflow-auto">
+                            <thead>
+                                <th>Fullname</th>
+                                <th>Phone </th>
+                                <th>Email </th> 
+                                <th>Active Status </th>
+                            </thead>
+                            <tbody>
+                                {% for customer in customers %}
+                                {% if forloop.counter <= 10 %}
+                                <tr>
+                                    <td class="text-black" hidden> {{ customer.id }} </td>
+                                    <td class="text-black"> {{ customer.name }} </td>
+                                    <td class="text-black"> {{ customer.phone }} </td>
+                                    <td class="text-black"> {{ customer.email }} </td>
+                                    <td class="text-black"> {{ customer.is_active }} </td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% if customers.has_other_pages %}
+                            <div class="pagination">
+                                <span class="step-links">
+                                    {% if customers.has_previous %}
+                                        <a href="?page=1">&laquo; first</a>
+                                        <a href="?page={{ customers.previous_page_number }}">previous</a>
+                                    {% endif %}
+
+                                    <span class="current">
+                                        Page {{ customers.number }} of {{ customers.paginator.num_pages }}.
+                                    </span>
+
+                                    {% if customers.has_next %}
+                                        <a href="?page={{ customers.next_page_number }}">next</a>
+                                        <a href="?page={{ customers.paginator.num_pages }}">last &raquo;</a>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
