@@ -15,5 +15,8 @@ class ProductUploadForms(forms.ModelForm):
         self.fields['product_image'].widget.attrs.update({'accept':'image/*'}) 
 
         for field_name, field in self.fields.items():
-            field.widget.attrs.update({'class' : 'form-control'})
+            field.widget.attrs.update({'class' : 'form-control'}) 
+
+
+
             
