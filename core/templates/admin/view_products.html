@@ -40,7 +40,11 @@
                                     <td class="text-black text-uppercase"> {{ product.product_name }} </td>
                                     <td class="text-black"> {{ product.product_price }} </td>
                                     <td class="text-black"> {{ product.product_quantity }} </td>
-                                    <td><a><button type="button" class="btn-warning btn-sm text-white">EDIT</button></a></td>
+                                    <td>
+                                        <a href="{% url 'update_product' %}?product_id={{ product.id }}">
+                                            <button type="button" class="btn-warning btn-sm text-white">EDIT</button>
+                                        </a>
+                                    </td>
                                     <td><a><button type="button" class="btn-danger btn-sm">DELETE</button></a></td>
                                 </tr>
                                 {% endif %}

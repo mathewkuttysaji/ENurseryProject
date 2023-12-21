@@ -21,24 +21,28 @@ def product_upload(request):
         form = ProductUploadForms()
     return render(request, 'products/product_upload.html', {'form' : form}) 
 
-def update_product(request, product_id):
-    product = get_object_or_404(Products, id = product_id)
+
+def update_product(request):
+    
+    product_id = request.GET.get('product_id')
+    product = get_object_or_404(Products, id = product_id) 
 
     if request.method == 'POST':
         form = ProductUploadForms(request.POST, request.FILES, instance = product) 
 
         if form.is_valid():
-
-            updated_data = {field: form.cleaned_data[field] for field in form.cleaned_data if form.cleaned_data[field] is not None} 
+            updated_data = {field : form.cleaned_data[field] for field in form.cleaned_data if form.cleaned_data[field] is not None} 
 
             for field, value in updated_data.items():
-                setattr(product, field, value)
+                setattr(product, field, value) 
 
             product.save()
 
-            return render(request, "product/product_update.html", product_id = product_id)
+            messages.success(request, "Product uploaded successfully !!!") 
+            return render(request, "products/product_update.html", {'form' : form, 'product' : product}) 
+        else:
+            messages.error(request, "Product uploaded failed !!! Please try again") 
+            return render(request, "products/product_update.html", {'form' : form, 'product' : product})
     else:
-        
         form = ProductUploadForms(instance = product)
-        
-        return render(request, "product/product_update.html", {'form' : form, 'product' : product})
+        return render(request, "products/product_update.html", {'form' : form, 'product' : product})
