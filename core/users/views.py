@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import ContactUs
-
+from products.models import Products
 # Create your views here.
+
+def user_home(request): 
+    products = Products.objects.all() 
+    return render(request, "home.html", {'products' : products})
+
 
 def contact_us_view(request):
     if request.method == 'POST':

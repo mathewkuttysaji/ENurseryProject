@@ -3,7 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import CustomerCreationForm, ChangeProfileForm, StyledPasswordForm
 from django.urls import reverse
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required 
+from products.models import Products
 
 
 # Create your views here.
@@ -34,7 +35,8 @@ def login_view(request):
             if customer.is_superuser:
                 return redirect('/admin')
             else:
-                return redirect('home')
+                
+                return redirect('/user_home')
         else:
             messages.error(request, "Invalid credentials. Please try again. If you are new please login")
     else: 

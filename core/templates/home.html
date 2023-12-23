@@ -1,41 +1,104 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <!-- Start Hero Section -->
 <div class="hero">
-    <div class="container">
-        <div class="row justify-content-between">
-            <div class="col-lg-5">
-                <div class="intro-excerpt"> 
-                    <h1> Welcome </h1>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-lg-5">
+        <div class="intro-excerpt">
+          <h1>Welcome</h1>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 <!-- End Hero Section -->
 
 <!-- search form -->
 <div class="container-fluid">
-    <form action="search" method="post">
-        {% csrf_token %}
-        <div class="form-group row mt-3">
-            <div class="col-md-9">
-                <input type="search" name="h_search" id="h_search" class="form-control" value="{{ term }}">
-            </div>
-            <div class="col-md-3">
-                <a href="search">
-                    <input type="submit" value="SEARCH" id="searchbtn" name="searchbtn"
-                        class="form-control btn btn-primary">
-                </a>
-            </div>
-        </div>
-    </form>
+  <form action="search" method="post">
+    {% csrf_token %}
+    <div class="form-group row mt-3">
+      <div class="col-md-9">
+        <input
+          type="search"
+          name="h_search"
+          id="h_search"
+          class="form-control"
+          value="{{ term }}" />
+      </div>
+      <div class="col-md-3">
+        <a href="search">
+          <input
+            type="submit"
+            value="SEARCH"
+            id="searchbtn"
+            name="searchbtn"
+            class="form-control btn btn-primary" />
+        </a>
+      </div>
+    </div>
+  </form>
 </div>
 <!-- End of search form -->
 
+<div class="untree_co-section product-section before-footer-section">
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for product in products %}
+      <!-- card -->
+      <div class="card-group">
+        <!-- card -->
+        <div class="card h-100 text-black">
+          <div class="row g-0">
+            <div class="col-md-4">
+                <img
+                  src="{{ product.product_image.url }}"
+                  class="img-fluid rounded-start border-primary"
+                  alt="...."
+                  style="width: 100%; height: 100%; object-fit: cover" />
+            </div>
+            <div class="col-md-8">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-uppercase text-center mb-2">
+                  {{ product.product_name }}
+                </h5>
+                <h6 class="cart-title text-left mb-2">
+                  Price : <span>&#8377;</span>
+                  {{ product.product_price }}
+                </h6>
+                <h6 class="cart-title text-left mb-2">
+                  Available quantity : {{ product.product_quantity }}
+                </h6>
+                <div class="mt-auto">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <a href="">
+                        <button
+                          class="btn-warning border-0 rounded-pill position-absolute bottom-0 mb-2 text-white">
+                          ADD TO CART
+                        </button>
+                      </a>
+                    </div>
+                    <div class="col-md-6">
+                      <a href="">
+                        <button
+                          class="btn-success border-0 rounded-pill position-absolute bottom-0 mb-2">
+                          BUY NOW
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 
-
-
-{% endblock %}
+  {% endblock %}
+</div>

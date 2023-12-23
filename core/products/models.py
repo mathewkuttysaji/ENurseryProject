@@ -1,9 +1,10 @@
 from collections.abc import Iterable
 from django.db import models
 from django.core.validators import MinValueValidator
+from PIL import Image 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from PIL import Image
-
-# Create your models here.
 
 class Products(models.Model):
     product_name = models.CharField(max_length=255)
@@ -12,12 +13,12 @@ class Products(models.Model):
     product_image = models.ImageField(upload_to='product_images/') 
 
     def __str__(self):
-       return self.product_name  
+        return self.product_name  
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        img = Image.open(self.product_image.path)
+@receiver(post_save, sender=Products)
+def resize_product_image(sender, instance, created, **kwargs):
+    if created:
+        img = Image.open(instance.product_image.path)
         new_size = (450, 450) 
         img.thumbnail(new_size)
-        img.save(self.product_image.path)
+        img.save(instance.product_image.path)
