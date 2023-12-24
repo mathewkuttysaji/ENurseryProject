@@ -41,4 +41,14 @@ def add_to_cart(request):
         cart_item.save() 
     
     messages.success(request, "Product added to cart ", extra_tags="added_to_cart") 
-    return redirect('/user_home') 
+    return redirect('/user_home')  
+
+def view_cart(request): 
+    cart_products = Cart.objects.filter(user = request.user)
+    return render (request, "users/view_cart.html", {'cart_products' : cart_products}) 
+
+def remove_from_cart(request):
+    cart_id = request.GET.get('cart_id') 
+    cart_item = get_object_or_404(Cart, id=cart_id) 
+    cart_item.delete()
+    return redirect('/view_cart')    
