@@ -26,6 +26,7 @@
                     <div class="p-3 p-lg-5 border bg-white h-100">
                         <table class="table site-block-order-table mb-5 overflow-auto">
                             <thead>
+                                <th>Sl.no </th>
                                 <th>PRODUCT </th>
                                 <th>PRICE </th>
                                 <th>QUANTITY </th> 
@@ -37,6 +38,7 @@
                                 {% if forloop.counter <= 10 %}
                                 <tr>
                                     <td class="text-black" hidden> {{ product.id }} </td>
+                                    <td class="text-black"> {{ forloop.counter }} </td>
                                     <td class="text-black text-uppercase"> {{ product.product_name }} </td>
                                     <td class="text-black"> {{ product.product_price }} </td>
                                     <td class="text-black"> {{ product.product_quantity }} </td>
@@ -56,21 +58,21 @@
                             </tbody>
                         </table>
 
-                        {% if customers.has_other_pages %}
+                        {% if products.has_other_pages %}
                             <div class="pagination">
                                 <span class="step-links">
-                                    {% if customers.has_previous %}
+                                    {% if products.has_previous %}
                                         <a href="?page=1">&laquo; first</a>
-                                        <a href="?page={{ customers.previous_page_number }}">previous</a>
+                                        <a href="?page={{ products.previous_page_number }}">previous</a>
                                     {% endif %}
 
                                     <span class="current">
-                                        Page {{ customers.number }} of {{ customers.paginator.num_pages }}.
+                                        Page {{ products.number }} of {{ products.paginator.num_pages }}.
                                     </span>
 
-                                    {% if customers.has_next %}
-                                        <a href="?page={{ customers.next_page_number }}">next</a>
-                                        <a href="?page={{ customers.paginator.num_pages }}">last &raquo;</a>
+                                    {% if products.has_next %}
+                                        <a href="?page={{ products.next_page_number }}">next</a>
+                                        <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
                                     {% endif %}
                                 </span>
                             </div>

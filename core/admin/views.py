@@ -24,7 +24,7 @@ def view_users(request):
 
 
 def view_products(request):
-    product_list = Products.objects.all().order_by('id') 
+    product_list = Products.objects.all().order_by('product_name') 
     paginator = Paginator(product_list, 10) 
 
     page = request.GET.get('page') 
@@ -36,4 +36,6 @@ def view_products(request):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
-    return render(request, "admin/view_products.html", {'products' : products})
+    return render(request, "admin/view_products.html", {'products' : products}) 
+
+
