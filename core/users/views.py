@@ -40,5 +40,5 @@ def add_to_cart(request):
         cart_item.quantity += 1
         cart_item.save() 
     
-    messages.success(request, "Product added to cart ") 
-    return redirect('/user_home')
+    messages.success(request, "Product added to cart ", extra_tags="added_to_cart") 
+    return redirect('/user_home') 

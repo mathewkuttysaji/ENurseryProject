@@ -74,7 +74,7 @@
                 <div class="mt-auto">
                   <div class="row">
                     <div class="col-md-6">
-                      <a href="">
+                      <a href="{% url 'add_to_cart' %}?product_id={{ product.id }}">
                         <button
                           class="btn-warning border-0 rounded-pill position-absolute bottom-0 mb-2 text-white">
                           ADD TO CART
@@ -100,6 +100,32 @@
       </div>
     </div>
   </div>
-
-  {% endblock %}
 </div>
+
+<script>
+  // Function to show the pop-up message
+  function showPopupMessage(message) {
+      var popup = document.getElementById("popupMessage");
+      popup.innerHTML = message;
+      popup.style.display = "block";
+
+      // Hide the pop-up after 3 seconds (adjust the time as needed)
+      setTimeout(function () {
+          popup.style.display = "none";
+      }, 3000);
+  }
+</script> 
+
+<div id="popupMessage" class="popup-message"></div>
+
+<script>
+    // Check if the message with the specified tag exists
+    var addedToCartMessage = "{% if messages.tags %}{% if 'added_to_cart' in messages.tags %}{{ messages.tags.added_to_cart.0 }}{% endif %}{% endif %}";
+
+    // Display the pop-up message if it exists
+    if (addedToCartMessage) {
+        showPopupMessage(addedToCartMessage);
+    }
+</script> 
+
+{% endblock %}
