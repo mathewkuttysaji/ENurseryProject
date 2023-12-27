@@ -3,7 +3,6 @@ from django.db import models
 from products.models import Products 
 from accounts.models import Customers
 
-from accounts.models import Customers
 # Create your models here.
 
 class ContactUs(models.Model):

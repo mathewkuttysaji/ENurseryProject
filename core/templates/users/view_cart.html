@@ -43,7 +43,7 @@
                                     </td>
                                     <td data-product-id="{{ product.id }}" class="text-start">Rs. {{ product.product.product_price }}</td> 
                                     <td class="text-start">
-                                        <input type="number" name="quantity_{{ product.id }}" value="{{ product.quantity }}" min="1" max="{{ product.product.product_quantity }}" onchange="calculateTotal(this)">
+                                        <input type="number" data-product-id="{{ product.id }}" name="quantity_{{ product.id }}" value="{{ product.quantity }}" min="1" max="{{ product.product.product_quantity }}" onChange="updateQuantity(this)">
                                      </td>
                                      <td id="total_{{ product.id }}" class="text-start">{{ product.amount }}</td>
                                     <td class="text-start"><a href="{% url 'remove_from_cart' %}?cart_id={{ product.id }}"> <button type="button" class="btn-danger"> REMOVE </button> </a>
@@ -54,8 +54,10 @@
                     </div>
                     <div class="container">
                         <div class="row mb-5 mt-5  ">
-                            <div class="d-grid gap-2 col-6 mx-auto mt-4">
-                                <input type="submit" value="MAKE PURCHASE" class="btn btn-primary">
+                            <div class="d-grid gap-2 col-6 mx-auto mt-4"> 
+                                <a href=""> 
+                                    <button type="button" class="btn btn-primary"> MAKE PURCHASE </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -80,15 +82,51 @@
         const total = quantity * price;
         document.querySelector(`td#total_${productId}`).innerText = total.toFixed(2);
     }
-
-    // Function to calculate total for all inputs on page load
+    
     function calculateInitialTotals() {
         const quantityInputs = document.querySelectorAll('[name^="quantity_"]');
         quantityInputs.forEach(input => calculateTotal(input));
     }
-
-    // Call the function when the page is loaded
-    document.addEventListener('DOMContentLoaded', calculateInitialTotals);
+    
+    function updateQuantity(input) {
+        const productId = input.getAttribute('data-product-id');
+        const quantity = parseInt(input.value);
+    
+        // Send an AJAX request to update the quantity on the server
+        fetch(`/update_cart_quantity/${productId}/${quantity}/`, {
+            method: 'GET',  // Adjust the HTTP method as needed
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the response if needed
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    
+        // Calculate total locally (optional)
+        calculateTotal(input);
+    }
+    
+    window.onload = function () {
+        const quantityInputs = document.querySelectorAll('[name^="quantity_"]');
+        quantityInputs.forEach(input => {
+            input.addEventListener('change', function () {
+                updateQuantity(this);
+            });
+        });
+    
+        // Calculate initial totals
+        calculateInitialTotals();
+    };
+    
 </script>
+
 
 {% endblock %}
