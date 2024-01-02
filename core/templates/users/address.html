@@ -1,0 +1,57 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- Start Hero Section -->
+<div class="hero">
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-lg-5">
+        <div class="intro-excerpt">
+          <h1>Purchase</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Hero Section -->
+
+<div class="untree_co-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mb-5 mb-md-0">
+        
+        {% if messages %} 
+        {% for message in messages %} 
+        <li{% if message.tags %} class="{{ message.tags }} {% endif %}">{{ message }}</li> 
+        {% endfor %}
+        {% endif %}
+
+        <h2 class="h3 mb-3 text-black">Enter Purchase Address...</h2>
+        <div class="p-3 p-lg-5 border bg-white">
+          <form action="{% url 'purchase_next' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group col-12">
+              <div class="text-black fs-4 mb-4">
+                {{ form.address.label_tag}}
+              </div>
+              {{ form.address }} {% if form.address.errors %}
+              <div class="alert alert-danger mt-3">
+                {{ form.address.errors }}
+              </div>
+              {% endif %}
+            </div>
+            <div class="row">
+              <div class="d-grid gap-2 col-6 mx-auto mt-4">
+                <input
+                  type="submit"
+                  value="MAKE PURCHASE"
+                  class="btn btn-primary" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

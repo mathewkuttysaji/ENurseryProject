@@ -1,132 +1,152 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <!-- Start Hero Section -->
 <div class="hero">
-    <div class="container">
-        <div class="row justify-content-between">
-            <div class="col-lg-5">
-                <div class="intro-excerpt">
-                    <h1> Cart </h1>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-lg-5">
+        <div class="intro-excerpt">
+          <h1>Cart</h1>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 <!-- End Hero Section -->
 
 <div class="untree_co-section before-footer-section">
-    <div class="container">
-        <div class="row mb-5">
-            {% if cart_products %}
-                <form class="col-md-12" method="post" action="cart">
-                    {% csrf_token %}
-                    <div class="site-blocks-table">
-                        <table class="table">
-                            <thead>
-                                <tr> 
-                                    <th class="text-start">SL.No</th>
-                                    <th class="product-name text-start">PRODUCT</th>
-                                    <th class="product-price text-start">PRICE</th> 
-                                    <th class="product-price text-start">QUANTITY</th> 
-                                    <th class="product-total text-start">TOTAL</th>
-                                    <th class="product-remove text-start">REMOVE</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for product in cart_products %}
-                                <tr> 
-                                    <td class="text-start"> {{ forloop.counter }} </td>
-                                    <td class="product-name">
-                                        <h2 class="h5 text-black text-uppercase text-start"> {{ product.product.product_name }} </h2>
-                                    </td>
-                                    <td data-product-id="{{ product.id }}" class="text-start">Rs. {{ product.product.product_price }}</td> 
-                                    <td class="text-start">
-                                        <input type="number" data-product-id="{{ product.id }}" name="quantity_{{ product.id }}" value="{{ product.quantity }}" min="1" max="{{ product.product.product_quantity }}" onChange="updateQuantity(this)">
-                                     </td>
-                                     <td id="total_{{ product.id }}" class="text-start">{{ product.amount }}</td>
-                                    <td class="text-start"><a href="{% url 'remove_from_cart' %}?cart_id={{ product.id }}"> <button type="button" class="btn-danger"> REMOVE </button> </a>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="container">
-                        <div class="row mb-5 mt-5  ">
-                            <div class="d-grid gap-2 col-6 mx-auto mt-4"> 
-                                <a href=""> 
-                                    <button type="button" class="btn btn-primary"> MAKE PURCHASE </button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            {% else %}
-                <div class="col-md-12">
-                    <div class="row mb-12">
-                        <div class="col-md-12 h-100">
-                            <h2 class="h3 mb-3 ">Your cart is empty. Please add items to the cart. <a href="{% url 'user_home' %}"> Go to shopping </a></h2>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
+  <div class="container">
+    <div class="row mb-5">
+      {% if cart_products %}
+      <div class="site-blocks-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-start">SL.No</th>
+              <th class="product-name text-start">PRODUCT</th>
+              <th class="product-price text-start">PRICE</th>
+              <th class="product-price text-start">QUANTITY</th>
+              <th class="product-total text-start">TOTAL</th>
+              <th class="product-remove text-start">REMOVE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in cart_products %}
+            <tr>
+              <td class="text-start">{{ forloop.counter }}</td>
+              <td class="product-name">
+                <h2 class="h5 text-black text-uppercase text-start">
+                  {{ product.product.product_name }}
+                </h2>
+              </td>
+              <td data-product-id="{{ product.id }}" class="text-start">
+                Rs. {{ product.product.product_price }}
+              </td>
+              <td class="text-start">
+                <input
+                  type="number"
+                  data-product-id="{{ product.id }}"
+                  name="quantity_{{ product.id }}"
+                  value="{{ product.quantity }}"
+                  min="1"
+                  max="{{ product.product.product_quantity }}"
+                  onChange="updateQuantity(this)" />
+              </td>
+              <td id="total_{{ product.id }}" class="text-start">
+                {{ product.amount }}
+              </td>
+              <td class="text-start">
+                <a href="{% url 'remove_from_cart' %}?cart_id={{ product.id }}">
+                  <button type="button" class="btn-danger">REMOVE</button>
+                </a>
+              </td>
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row">
+        <div class="d-grid gap-2 col-6 mx-auto mt-4">
+          <a href="{% url 'user_home' %}" class="btn btn-primary"> <- BACK </a>
         </div>
+        <div class="d-grid gap-2 col-6 mx-auto mt-4">
+          <a href="{% url 'purchase_next' %}" class="btn btn-primary"> NEXT -> </a>
+        </div>
+      </div>
+
+      {% else %}
+      <div class="col-md-12">
+        <div class="row mb-12">
+          <div class="col-md-12 h-100">
+            <h2 class="h3 mb-3">
+              Your cart is empty. Please add items to the cart.
+              <a href="{% url 'user_home' %}"> Go to shopping </a>
+            </h2>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
+  </div>
 </div>
 <script>
-    function calculateTotal(input) {
-        const productId = input.name.split('_')[1];
-        const quantity = parseInt(input.value);
-        const price = parseFloat(document.querySelector(`td[data-product-id="${productId}"]`).innerText.replace('Rs. ', ''));
-        const total = quantity * price;
-        document.querySelector(`td#total_${productId}`).innerText = total.toFixed(2);
-    }
-    
-    function calculateInitialTotals() {
-        const quantityInputs = document.querySelectorAll('[name^="quantity_"]');
-        quantityInputs.forEach(input => calculateTotal(input));
-    }
-    
-    function updateQuantity(input) {
-        const productId = input.getAttribute('data-product-id');
-        const quantity = parseInt(input.value);
-    
-        // Send an AJAX request to update the quantity on the server
-        fetch(`/update_cart_quantity/${productId}/${quantity}/`, {
-            method: 'GET',  // Adjust the HTTP method as needed
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Handle the response if needed
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-    
-        // Calculate total locally (optional)
-        calculateTotal(input);
-    }
-    
-    window.onload = function () {
-        const quantityInputs = document.querySelectorAll('[name^="quantity_"]');
-        quantityInputs.forEach(input => {
-            input.addEventListener('change', function () {
-                updateQuantity(this);
-            });
-        });
-    
-        // Calculate initial totals
-        calculateInitialTotals();
-    };
-    
-</script>
+  function calculateTotal(input) {
+    const productId = input.name.split("_")[1];
+    const quantity = parseInt(input.value);
+    const price = parseFloat(
+      document
+        .querySelector(`td[data-product-id="${productId}"]`)
+        .innerText.replace("Rs. ", "")
+    );
+    const total = quantity * price;
+    document.querySelector(`td#total_${productId}`).innerText =
+      total.toFixed(2);
+  }
 
+  function calculateInitialTotals() {
+    const quantityInputs = document.querySelectorAll('[name^="quantity_"]');
+    quantityInputs.forEach((input) => calculateTotal(input));
+  }
+
+  function updateQuantity(input) {
+    const productId = input.getAttribute("data-product-id");
+    const quantity = parseInt(input.value);
+
+    // Send an AJAX request to update the quantity on the server
+    fetch(`/update_cart_quantity/${productId}/${quantity}/`, {
+      method: "GET", // Adjust the HTTP method as needed
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Handle the response if needed
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+
+    // Calculate total locally (optional)
+    calculateTotal(input);
+  }
+
+  window.onload = function () {
+    const quantityInputs = document.querySelectorAll('[name^="quantity_"]');
+    quantityInputs.forEach((input) => {
+      input.addEventListener("change", function () {
+        updateQuantity(this);
+      });
+    });
+
+    // Calculate initial totals
+    calculateInitialTotals();
+  };
+</script>
 
 {% endblock %}

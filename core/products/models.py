@@ -1,12 +1,13 @@
 from collections.abc import Iterable
-from django.db import models
+from django.db import models, transaction
 from django.core.validators import MinValueValidator
 from PIL import Image 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from PIL import Image 
 import os 
-from accounts.models import Customers
+from accounts.models import Customers 
+from django.core.exceptions import ValidationError 
 
 class Products(models.Model):
     product_name = models.CharField(max_length=255)
@@ -42,12 +43,13 @@ class Purchase(models.Model):
     customer = models.ForeignKey(Customers, on_delete = models.CASCADE) 
     products = models.ManyToManyField(Products, through='PurchaseItem') 
     total_amount = models.DecimalField(max_digits = 12, decimal_places = 3, validators = [MinValueValidator(0)]) 
-    purchase_date = models.DateTimeField(auto_now_add = True)  
+    purchase_date = models.DateTimeField(auto_now_add = True) 
+    address = models.TextField(blank=True) 
 
     def save(self, *args, **kwargs):
-        self.total_amount = sum(item.unit_price * item.quantity for item in self.purchaseitem_set.all()) 
         super().save(*args, **kwargs)
 
+    
 
 class PurchaseItem(models.Model):
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE) 
@@ -55,7 +57,13 @@ class PurchaseItem(models.Model):
     quantity = models.PositiveIntegerField() 
     unit_price = models.DecimalField(max_digits= 10, decimal_places=2, validators=[MinValueValidator(0)]) 
 
-    def save(self, *args, **kwargs):
-        self.unit_price = self.product.product_price 
+    def save(self, *args, **kwargs): 
         super().save(*args, **kwargs) 
 
+
+@receiver(post_save, sender=PurchaseItem)
+def update_quantity(sender, instance, created, **kwargs): 
+    if created:
+        product = instance.product 
+        product.product_quantity -= instance.quantity 
+        product.save()

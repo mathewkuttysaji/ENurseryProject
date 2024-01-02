@@ -1,5 +1,5 @@
 from django import forms 
-from .models import Products
+from .models import Products, Purchase
 
 class ProductUploadForms(forms.ModelForm):
 
@@ -18,5 +18,4 @@ class ProductUploadForms(forms.ModelForm):
             field.widget.attrs.update({'class' : 'form-control'}) 
 
 
-
-            
+         

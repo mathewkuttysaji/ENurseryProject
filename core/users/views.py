@@ -2,11 +2,10 @@ from django.forms import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import ContactUs, Cart
-from products.models import Products  
+from products.models import Products, Purchase, PurchaseItem  
+from django.http import JsonResponse 
 from .forms import PurchaseForm 
-from products.models import Purchase, PurchaseItem 
-from django.http import JsonResponse
- 
+from django.db import transaction 
 
 # Create your views here.
 
@@ -55,9 +54,10 @@ def clear_cart(user):
     Cart.objects.filter(user=user).delete()
 
 def view_cart(request): 
-    user = request.user
-    cart_products = get_cart_items(user)
-    return render (request, "users/view_cart.html", {'cart_products' : cart_products}) 
+    user = request.user 
+    form = PurchaseForm()
+    cart_products = get_cart_items(user) 
+    return render (request, "users/view_cart.html", {'cart_products' : cart_products, 'form' : form}) 
 
 def remove_from_cart(request):
     cart_id = request.GET.get('cart_id') 
@@ -65,36 +65,6 @@ def remove_from_cart(request):
     cart_item.delete()
     return redirect('/view_cart')     
 
-def make_purchase(request): 
-    if request.method == 'POST':
-
-        form = PurchaseForm(request.POST) 
-        print(form) 
-        print("form validity", form.is_valid()) 
-        if form.is_valid():
-            try: 
-                user = request.user 
-                purchase = Purchase.objects.create(customer = user) 
-
-                cart_items = get_cart_items(user) 
-
-                if cart_items:
-                    for cart_item in cart_items:
-                        PurchaseItem.objects.create( 
-                            purchase = purchase, 
-                            product = cart_item.product, 
-                            quantity = cart_item.quantity 
-                        ) 
-
-                        clear_cart(user) 
-
-                        return redirect('\thankyou') 
-                else:
-                    return render('\purchase')
-            except ValidationError as e:
-                return redirect('Purchasefailed') 
-    else:
-        return render(request, "users/make_purchase.html") 
 
 def update_cart_quantity(request, product_id, quantity):
     cart_item = get_object_or_404(Cart, id=product_id)  
@@ -102,3 +72,89 @@ def update_cart_quantity(request, product_id, quantity):
     cart_item.save()
 
     return JsonResponse({'status': 'success'})
+
+# ... your other imports ...
+
+def make_purchase(request):
+    user = request.user
+    purchases = Purchase.objects.filter(customer=user)
+
+    # Check if the user has any purchases
+    if purchases.exists():
+        # Accessing related PurchaseItem instances for each Purchase
+        purchase_items_list = []
+        for purchase in purchases:
+            purchase_items = purchase.purchaseitem_set.all()
+            purchase_items_list.append({
+                'purchase': purchase,
+                'purchase_items': purchase_items,
+            })
+
+        context = {
+            'purchase_items_list': purchase_items_list,
+        }
+
+        
+        return render(request, 'users/make_purchase.html', context)
+    else:
+        context = {
+            'message': 'Please make a purchase before accessing this page.',
+        }
+        return render(request, 'users/no_purchase.html', context)
+
+
+
+
+def purchase_next(request):
+
+    if request.method == 'POST':
+        form = PurchaseForm(request.POST) 
+
+        print("Form validity", form.is_valid())
+        if form.is_valid():
+
+            user = request.user
+            purchase = Purchase(
+                customer = user, 
+                address = form.cleaned_data['address'], 
+                total_amount = 0
+            ) 
+            purchase.save() 
+
+            cart_products = Cart.objects.filter(user = user) 
+
+            for cart_product in cart_products:
+                quantity = cart_product.quantity 
+                unit_price = (cart_product.product.product_price * quantity) 
+                
+                print(f'{cart_product.product.product_name} price = {unit_price}')  
+
+                purchase_item = PurchaseItem(
+                    purchase = purchase, 
+                    product = cart_product.product, 
+                    quantity = quantity, 
+                    unit_price = unit_price
+                ) 
+
+                purchase_item.save() 
+
+            purchase.total_amount = sum( 
+                 item.unit_price for item in purchase.purchaseitem_set.filter(purchase=purchase)
+            ) 
+            
+            purchase.save() 
+        else:
+            messages.error(request, "Something went wrong. Please try again later")
+        Cart.objects.filter(user = user).delete() 
+
+        for purchase_item in purchase.purchaseitem_set.all():
+                product = purchase_item.product
+                remaining_quantity = product.product_quantity - purchase_item.quantity
+                product.product_quantity = remaining_quantity
+                product.save()
+
+        return redirect('make_purchase')
+    else:
+        form = PurchaseForm() 
+
+    return render(request, "users/address.html", {'form' : form}) 
