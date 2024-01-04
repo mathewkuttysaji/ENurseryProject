@@ -1,0 +1,66 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+
+<!-- Start Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>VIEW PURCHASES </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+
+
+<div class="untree_co-section">
+    <div class="container">
+        <div class="col-md-12">
+            <div class="row mb-12">
+                <div class="col-md-12 h-100">
+                    <h2 class="h3 mb-3 text-black"> Purchases... </h2>
+                    <div class="p-3 p-lg-5 border bg-white h-100">
+                        <table class="table site-block-order-table mb-5 overflow-auto">
+                            <thead>
+                                <th>Sl.no </th>
+                                <th>USER </th>
+                                <th>PRICE </th> 
+                                <th>PRODUCTS </th>
+                                <th>ORDER DATE </th> 
+                                <th>DETAILS </th> 
+                            </thead>
+                            <tbody>
+                                {% for purchase_info in purchase_info_list %} 
+                                <tr> 
+                                    <td class="text-black">{{ forloop.counter }}</td> 
+                                    <td class="text-black">{{ purchase_info.user.name }}</td> 
+                                    <td class="text-black">{{ purchase_info.total_price }}</td> 
+                                    <td class="text-black"> 
+                                        {% for product in purchase_info.products %} 
+                                        {{ product.product_name }}<br> 
+                                        {% endfor %} 
+                                    </td> 
+                                    <td class="text-black">{{ purchase_info.purchase_date }}</td> 
+                                    <td>
+                                        <a href="{% url 'view_purchase_details' %}?purchase_id={{ purchase_info.purchase_id }}">
+                                            <button type="button" class="btn-success btn-sm text-white"> DETAILS </button>
+                                        </a>
+                                    </td>
+                                    
+                                </tr> 
+                                {% endfor %} 
+                            </tbody> 
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -35,16 +35,15 @@
 
 			<div class="collapse navbar-collapse" id="navbarsFurni">
 				<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-					<li><a class="nav-link" href="{% url 'admin_home' %}">Admin Home</a></li>
+					<li><a class="nav-link" href="{% url 'view_products' %}">Admin Home</a></li>
 					<li><a class="nav-link" href="{% url 'view_users' %}"> View Users </a></li>
 					<li><a class="nav-link" href="{% url 'product_upload' %}"> Upload Products </a></li>
-					<li><a class="nav-link" href="{% url 'view_products' %}"> View Products</a></li>
-					<li><a class="nav-link" href="{% url 'view_messages' %}"> View messages </a></li>
+					{% comment %} <li><a class="nav-link" href="{% url 'view_messages' %}"> View Messages </a></li> {% endcomment %}
+					<li><a class="nav-link" href="{% url 'view_purchases' %}"> View Purchases </a></li>
 				</ul>
 
 				<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 					<li><a class="nav-link" href="{% url 'editprofile' %}"><img src="{% static 'images/user.svg' %}"></a></li>
-					<li><a class="nav-link" href="cart"><img src="{% static 'images/cart.svg' %}"></a></li>
 					<li><a class="nav-link ms-2" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt" style="font-size: 28px;"></i></a></li>
 				</ul>
 			</div>
@@ -61,11 +60,14 @@
 		<div class="container relative">
 
 			<div class="row g-5 mb-5">
-				<div class="col-lg-4">
-					<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
-					<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus
-						malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.
-						Pellentesque habitant</p>
+				<div class="col-lg-8">
+					<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">E-Nursery</a></div>
+					<p class="text-justify mb-4">Envision a sanctuary where nature's vibrant palette unfolds, 
+						and the gentle rustle of leaves carries whispers of growth. In our nursery project,
+						each seed planted is a promise of flourishing life, weaving a tapestry of colors and scents. 
+						Rooted in a commitment to sustainability, we nurture not just plants but communities, 
+						fostering connections that blossom and thrive. Join us in this journey of cultivation, 
+						where the beauty of nature intertwines with the shared stories of families, growth, and a greener, more vibrant world </p>
 
 					<ul class="list-unstyled custom-social">
 						<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
@@ -75,43 +77,7 @@
 					</ul>
 				</div>
 
-				<div class="col-lg-8">
-					<div class="row links-wrap">
-						<div class="col-6 col-sm-6 col-md-3">
-							<ul class="list-unstyled">
-								<li><a href="#">About us</a></li>
-								<li><a href="#">Services</a></li>
-								<li><a href="#">Blog</a></li>
-								<li><a href="#">Contact us</a></li>
-							</ul>
-						</div>
-
-						<div class="col-6 col-sm-6 col-md-3">
-							<ul class="list-unstyled">
-								<li><a href="#">Support</a></li>
-								<li><a href="#">Knowledge base</a></li>
-								<li><a href="#">Live chat</a></li>
-							</ul>
-						</div>
-
-						<div class="col-6 col-sm-6 col-md-3">
-							<ul class="list-unstyled">
-								<li><a href="#">Jobs</a></li>
-								<li><a href="#">Our team</a></li>
-								<li><a href="#">Leadership</a></li>
-								<li><a href="#">Privacy Policy</a></li>
-							</ul>
-						</div>
-
-						<div class="col-6 col-sm-6 col-md-3">
-							<ul class="list-unstyled">
-								<li><a href="#">Nordic Chair</a></li>
-								<li><a href="#">Kruzo Aero</a></li>
-								<li><a href="#">Ergonomic Chair</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
+				
 
 			</div>
 

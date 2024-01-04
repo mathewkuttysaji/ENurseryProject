@@ -16,7 +16,7 @@
 
 <!-- search form -->
 <div class="container-fluid">
-  <form action="search" method="post">
+  <form action="{% url 'search' %}" method="post">
     {% csrf_token %}
     <div class="form-group row mt-3">
       <div class="col-md-9">
@@ -37,7 +37,16 @@
             class="form-control btn btn-primary" />
         </a>
       </div>
-    </div>
+    </div> 
+    {% if messages %} 
+    <div class="messages"> 
+      {% for message in messages %} 
+      <div class="alert {% if message.tags %}alert-{{ message.tags }} {% endif %}"> 
+        {{ message }} 
+      </div> 
+      {% endfor %} 
+    </div> 
+    {% endif %}
   </form>
 </div>
 <!-- End of search form --> 

@@ -1,0 +1,115 @@
+{% extends 'admin/base.html' %} {% block content %}
+
+<!-- Start Hero Section -->
+<div class="hero">
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-lg-5">
+        <div class="intro-excerpt">
+          <h1>Order Details</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Hero Section -->
+
+<div class="untree_co-section">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md-12">
+        <h2 class="h3 mb-3 text-black">Order</h2>
+        <div class="p-3 p-lg-5 border bg-white">
+          <table class="table site-block-order-table mb-5">
+            <thead>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+            </thead>
+            <tbody>
+              {% for purchase_item in purchase_items %}
+              <tr>
+                <td>{{ purchase_item.product.product_name }}</td>
+                <td>{{ purchase_item.quantity }}</td>
+                <td>{{ purchase_item.product.product_price }}</td>
+                <td>{{ purchase_item.unit_price }}</td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <td class="text-black font-weight-bold">
+                  <strong>Order Total</strong>
+                </td>
+                <td></td>
+                <td></td>
+                <td class="text-black font-weight-bold">
+                  <strong>{{ purchase.total_amount }}</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="border p-3 mb-3">
+            <h3 class="h6 mb-0">
+              <a
+                class="d-block text-black font-weight-bold"
+                data-bs-toggle="collapse"
+                href="#collapsebank"
+                role="button"
+                aria-expanded="false"
+                aria-controls="collapsebank"
+                >Order details
+              </a>
+            </h3>
+            <div class="collapse" id="collapsebank">
+              <div class="row">
+                <div class="col-6 mt-4">
+                  <label class="text-black font-weight-bold"> User </label>
+                </div>
+                <div class="col-6 mt-4">
+                  <strong class="mt-4 text-black font-weight-bold">
+                    {{ purchase.customer.name }}
+                  </strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6 mt-4">
+                  <label class="text-black font-weight-bold">
+                    Purchase Date
+                  </label>
+                </div>
+                <div class="col-6 mt-4">
+                  <strong class="mt-4 text-black font-weight-bold">
+                    {{ purchase.purchase_date }}
+                  </strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6 mt-4">
+                  <label class="text-black font-weight-bold"> Address </label>
+                </div>
+                <div class="col-6 mt-4">
+                  <strong class="mt-4 text-black font-weight-bold">
+                    {{ purchase.address }}
+                  </strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="row mb-12">
+        <div class="col-md-12 h-100">
+          <h2 class="h3 mb-3">
+            <a href="{% url 'view_purchases' %}"> Go Back </a>
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

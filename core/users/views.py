@@ -13,6 +13,19 @@ def user_home(request):
     products = Products.objects.filter(product_quantity__gt = 0).order_by('product_name')
     return render(request, "home.html", {'products' : products})
 
+def search_view(request):
+    term = request.POST.get('h_search') 
+
+    if term:
+        products = Products.objects.filter(product_name__icontains = term)
+        if products: 
+            context = { 
+                'term' : term, 'products' : products, 
+            } 
+            return render(request, 'home.html', context) 
+        else:
+            messages.error(request, 'Sorry.There is no such products')  
+            return redirect('/user_home')
 
 def contact_us_view(request):
     if request.method == 'POST':
@@ -25,8 +38,7 @@ def contact_us_view(request):
             )
             if contact_us: 
                 contact_us.save()
-                return render(request, "home.html")
-        pass
+                return redirect('/user_home')
     return render(request, "users/contactus.html")
 
 def add_to_cart(request): 
@@ -43,7 +55,6 @@ def add_to_cart(request):
         cart_item.quantity += 1
         cart_item.save() 
     
-    messages.success(request, "Product added to cart ", extra_tags="added_to_cart") 
     return redirect('/user_home')  
 
 
