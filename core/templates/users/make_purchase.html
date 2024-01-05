@@ -73,13 +73,19 @@
               </div>
             </div>
 
-            {% endfor %}
             <div class="form-group">
               Your order has been placed and will arrive soon.
             </div>
           </div>
         </div>
       </div>
+
+      <a href="{% url 'cancel_purchase' %}?purchase_id={{ purchase_info.purchase.id }}">
+        <button type="button" class="btn-danger btn-sm"> CANCEL PURCHASE </button>
+    </a>
+
+    {% endfor %}
+
     {% else %}
       <div class="col-md-12">
         <div class="row mb-12">

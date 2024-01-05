@@ -99,7 +99,6 @@ def make_purchase(request):
             purchase_items_list.append({
                 'purchase': purchase,
                 'purchase_items': purchase_items,
-                'purchase_address' : purchase.address,
             })
 
         context = {
@@ -166,3 +165,11 @@ def purchase_next(request):
         form = PurchaseForm() 
 
     return render(request, "users/address.html", {'form' : form}) 
+ 
+
+def cancel_purchase(request):
+    purchase_id = request.GET.get('purchase_id') 
+    purchase = get_object_or_404(Purchase, id = purchase_id) 
+    purchase.delete()
+    return redirect('/make_purchase')
+
