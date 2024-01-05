@@ -99,20 +99,17 @@ def make_purchase(request):
             purchase_items_list.append({
                 'purchase': purchase,
                 'purchase_items': purchase_items,
+                'purchase_address' : purchase.address,
             })
 
         context = {
             'purchase_items_list': purchase_items_list,
         }
-
         
         return render(request, 'users/make_purchase.html', context)
     else:
-        context = {
-            'message': 'Please make a purchase before accessing this page.',
-        }
-        return render(request, 'users/no_purchase.html', context)
-
+        return render(request, 'users/make_purchase.html')
+        
 
 
 
