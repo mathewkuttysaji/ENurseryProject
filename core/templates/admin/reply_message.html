@@ -1,0 +1,94 @@
+{% extends 'admin/base.html' %} 
+{% block content %}
+
+{% if not messages %}
+  <div class="hero">
+    <div class="container">
+      <div class="row justify-content-between">
+        <div class="col-lg-5">
+          <div class="intro-excerpt">
+            <h1>Replay Message</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Hero Section -->
+
+  <!-- Start Contact Form -->
+  <div class="untree_co-section">
+    <div class="container">
+      <div class="block">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-lg-12 pb-4">
+            <div class="p-3 p-lg-5 border bg-white">
+              <form method="post" action="{% url "replay_message" %}">
+                {% csrf_token %}
+
+                <div class="row">
+                  <div class="form-group mb-1 col-12">
+                    <label class="text-black fs-5 mb-1" for="message">User</label>
+                    <input
+                      name="recipient_name"
+                      class="form-control"
+                      id="message"
+                      placeholder="{{ message.customer.name }}"
+                      disabled/>
+                  </div>
+                  <div class="form-group mb-1 col-6">
+                    <input  type = "text"
+                      name="recipient_address"
+                      class="form-control"
+                      value = "{{ message.customer.email }}"
+                      hidden />
+                  </div>
+                  <div class="form-group mb-1">
+                    <label class="text-black fs-5 mb-3" for="message">Message</label>
+                    <textarea
+                      name="message"
+                      class="form-control"
+                      id="message"
+                      cols="30"
+                      rows="5"
+                      placeholder="{{ message.message_text }}"
+                      disabled></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="text-black fs-5 mb-3" for="message">Replay Message</label>
+                    <textarea
+                      name="reply_message"
+                      class="form-control"
+                      id="message"
+                      cols="30"
+                      rows="5"
+                      required
+                      placeholder="Enter your message here...."></textarea>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="d-grid gap-2 col-6 mx-auto mt-4">
+                    <input
+                      type="submit"
+                      value="Send Message"
+                      class="btn btn-primary" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }} {% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% endblock %}

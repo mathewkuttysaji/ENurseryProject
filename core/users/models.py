@@ -2,13 +2,13 @@ from django.core.exceptions import ValidationError
 from django.db import models 
 from products.models import Products 
 from accounts.models import Customers
-
+ 
 # Create your models here.
 
 class ContactUs(models.Model):
     customer = models.ForeignKey(Customers, on_delete=models.CASCADE) 
     date = models.DateTimeField(auto_now_add=True) 
-    message_text = models.TextField() 
+    message_text = models.TextField()  
 
     def __str__(self):
         return f"{self.customer.name}'s message "
